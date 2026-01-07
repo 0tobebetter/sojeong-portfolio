@@ -1,11 +1,73 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const name = "Sojeong Park";
+const title = "Data Analyst & Automation Specialist";
+const tagline =
+  "I build data-driven workflows, dashboards, and automations that reduce manual work and improve decision-making.";
+const links = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/sjalexpark/" },
+  { label: "GitHub", href: "https://github.com/0tobebetter" },
+//   { label: "Email", href: "mailto:analyst.sojeongpark@gmail.com" },
+];
+const projects = [
+  {
+    name: "Automation & Digital Workflow Transformation",
+    desc: "Automated recurring reporting and CRM segmentation workflows using Google Sheets, Apps Script, and APIs.",
+  },
+  {
+    name: "Oracle Biohealth Track",
+    desc: "Built KPI dashboards and reporting workflows to support campaign performance and decision-making.",
+  },
+  {
+    name: "Ildong Pharmaceutical Consumer Perception Study",
+    desc: "Analyzed multi-year data, visualised trends, and delivered stakeholder-ready insights.",
+  },
+  {
+    name: "Ildong Pharmaceutical Consumer Perception Study",
+    desc: "Analyzed multi-year data, visualised trends, and delivered stakeholder-ready insights.",
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{name} — Portfolio</title>
+    <meta name="description" content={tagline} />
+    <style>
+      main { max-width: 920px; margin: 0 auto; padding: 64px 20px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      h1 { font-size: 44px; margin: 0 0 8px; }
+      h2 { font-size: 18px; font-weight: 600; margin: 0 0 18px; opacity: .85; }
+      p  { font-size: 16px; line-height: 1.6; opacity: .9; }
+      .links { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0 40px; }
+      .links a { padding: 10px 14px; border: 1px solid rgba(0,0,0,.12); border-radius: 12px; text-decoration: none; color: inherit; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+      .card { border: 1px solid rgba(0,0,0,.10); border-radius: 16px; padding: 16px; background: rgba(255,255,255,.6); }
+      .card h3 { margin: 0 0 8px; font-size: 16px; }
+      footer { margin-top: 48px; opacity: .65; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>{name}</h1>
+      <h2>{title}</h2>
+      <p>{tagline}</p>
+
+      <div class="links">
+        {links.map((l) => <a href={l.href} target="_blank">{l.label}</a>)}
+      </div>
+
+      <h2>Selected Projects</h2>
+      <div class="grid">
+        {projects.map((p) => (
+          <div class="card">
+            <h3>{p.name}</h3>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <footer>© {new Date().getFullYear()} {name}</footer>
+    </main>
+  </body>
+</html>
