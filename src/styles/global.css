@@ -72,6 +72,11 @@ li {
   margin: 6px 0 0;
   color: var(--muted);
 }
+.visasatuas {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: smaller;
+}
 .tagline {
   margin-top: 14px;
   max-width: 70ch;
@@ -130,4 +135,33 @@ footer {
   margin-top: 56px;
   opacity: 0.65;
   font-size: 14px;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.nav a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  color: #000;
+}
+section[id] {
+  scroll-margin-top: 80px; /* 필요하면 70, 90으로 조절해봐 */
 }

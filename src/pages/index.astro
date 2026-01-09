@@ -8,16 +8,22 @@ import {
   projects,
   experience,
 } from "../data/site.js";
+const contact = {
+  email: "analyst.sojeongpark@gmail.com",
+  phone: "07355-630524",
+  linkedin: "https://www.linkedin.com/in/sjalexpark/",
+};
 ---
 
 <BaseLayout title={`${site.name} — Portfolio`} description={site.tagline}>
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-top">
       <div>
         <h1>{site.name}</h1>
         <p class="role"><strong>{site.role}</strong></p>
         <p class="location">{site.location}</p>
+        <p class="visasatuas">{site.visastatus}</p>
       </div>
 
       <div class="social">
@@ -62,7 +68,7 @@ import {
   </section>
 
   <!-- SKILLS -->
-  <section>
+  <section class="skills" id="skills">
     <h2>Key Skills</h2>
     <div class="grid">
       {
@@ -77,7 +83,7 @@ import {
   </section>
 
   <!-- BUSINESS IMPACT -->
-  <section>
+  <section class="impact" id="impact">
     <h2>Business Impact</h2>
     <ul>
       {businessImpact.map((item) => <li>{item}</li>)}
@@ -85,7 +91,7 @@ import {
   </section>
 
   <!-- PROJECTS -->
-  <section>
+  <section class="projects" id="projects">
     <h2>Selected Projects</h2>
     <div class="grid">
       {
@@ -101,24 +107,93 @@ import {
   </section>
 
   <!-- EXPERIENCE -->
-  <section>
-    <h2>Work Experience</h2>
-    <div class="stack">
-      {
-        experience.map((e) => (
-          <div class="card">
-            <h3>{e.title}</h3>
-            <p class="muted">
-              {e.org} · {e.period}
-            </p>
-            <ul>
-              {e.bullets.map((b) => (
-                <li>{b}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
-  </section>
+  <section class="experience" id="experience"></section>
+  <h2>Work Experience</h2>
+  <div class="stack">
+    {
+      experience.map((e) => (
+        <div class="card">
+          <h3>{e.title}</h3>
+          <p class="muted">
+            {e.org} · {e.location} · {e.period}
+          </p>
+          <ul>
+            {e.bullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
 </BaseLayout>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <h2>Contact</h2>
+
+  <div class="grid">
+    <!-- 폼: Netlify 전송용 -->
+    <form
+      name="portfolio-contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="card"
+    >
+      <input type="hidden" name="form-name" value="portfolio-contact" />
+      <p style="display:none;">
+        <label>
+          Don’t fill this out if you’re human:
+          <input name="bot-field" />
+        </label>
+      </p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Your Name *</label>
+          <input id="name" type="text" name="name" required />
+        </div>
+        <div class="field">
+          <label for="email">Your Email *</label>
+          <input id="email" type="email" name="email" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary">Send</button>
+    </form>
+
+    <!-- 오른쪽: 연락처 카드 -->
+    <div class="card">
+      <h3>Contact Detail</h3>
+      <p>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a><br />
+        (UK) {contact.phone}
+      </p>
+
+      <h3>Social</h3>
+      <p>
+        <a href={contact.linkedin} target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>
+        {" · "}
+        <a
+          href="https://github.com/0tobebetter"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>© {new Date().getFullYear()} Sojeong Park. All rights reserved.</p>
+</footer>
