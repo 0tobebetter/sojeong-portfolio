@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sojeong Park — Data Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <!--
+    THEME SYSTEM 설명:
+    - 이 스크립트는 <style>보다 먼저 실행돼서 렌더 전에 data-theme을 html에 붙임
+    - 덕분에 페이지 로드 시 테마 깜빡임(flash) 없음
+    - 테마 제어는 CSS [data-theme] 선택자가 전담 — JS는 속성만 바꾸고 스타일은 건드리지 않음
+  -->
+  <script>
+    (function () {
+      var BG = { light: '#f5f4f0', dark: '#141412' };
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.style.backgroundColor = BG[theme];
+      // body는 아직 없으므로 DOMContentLoaded에서 적용
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.backgroundColor = BG[theme];
+      });
+    })();
+  </script>
+
+  <style>
+    /* ══════════════════════════════════════
+       THEME VARIABLES
+       - :root = 라이트 모드 기본값
+       - [data-theme="dark"] = 다크 모드 덮어쓰기
+       - 배경/글자 모두 여기서 CSS가 전담 제어
+    ══════════════════════════════════════ */
+    :root {
+      --bg:           #f5f4f0;
+      --fg:           #1a1a18;
+      --accent:       #2d5a3d;
+      --accent-light: #ddeae1;
+      --muted:        #4a4a44;
+      --border:       #c4c3be;
+      --nav-bg:       rgba(245, 244, 240, 0.95);
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg:           #141412;
+      --fg:           #e8e7e2;
+      --accent:       #6aab7e;
+      --accent-light: #1a2e1f;
+      --muted:        #a8a89f;
+      --border:       #2a2a26;
+      --nav-bg:       rgba(20, 20, 18, 0.95);
+    }
+
+    /* ══════════════════════════════════════
+       BASE RESET & GLOBAL
+    ══════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      /* html도 배경색 지정 — body보다 뒤에 보이는 영역 커버 */
+      background-color: var(--bg);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      /* 토글 시 부드러운 전환 */
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* ══════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════ */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child { border-bottom: none; }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    /* ══════════════════════════════════════
+       LANGUAGE TOGGLE
+    ══════════════════════════════════════ */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--border);
+      border-radius: 20px;
+      padding: 2px;
+    }
+
+    .lang-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      border-radius: 16px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    /* ══════════════════════════════════════
+       THEME TOGGLE BUTTON
+    ══════════════════════════════════════ */
+    .theme-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .theme-btn:hover { border-color: var(--fg); color: var(--fg); }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    #hero {
+      padding-top: 96px;
+      padding-bottom: 80px;
+    }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-name {
+      font-size: clamp(42px, 8vw, 72px);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 20px;
+      color: var(--fg);
+    }
+
+    .hero-tagline-main {
+      font-size: clamp(20px, 3.5vw, 30px);
+      font-weight: 300;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      color: var(--fg);
+    }
+
+    .hero-tagline-main em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ══════════════════════════════════════
+       BUTTONS
+    ══════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      padding: 10px 18px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover { background: var(--accent); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover { border-color: var(--fg); }
+
+    /* ══════════════════════════════════════
+       SECTION HEADERS
+    ══════════════════════════════════════ */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* ══════════════════════════════════════
+       ABOUT
+    ══════════════════════════════════════ */
+    .about-text {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--fg);
+      max-width: 620px;
+    }
+
+    .about-meta {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 14px;
+      color: var(--fg);
+    }
+
+    /* ══════════════════════════════════════
+       ACHIEVEMENTS
+    ══════════════════════════════════════ */
+    .achievements {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .achievement-card {
+      background: var(--accent-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .achievement-number {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .achievement-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════
+       EXPERIENCE
+    ══════════════════════════════════════ */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .exp-item:last-child { margin-bottom: 0; }
+
+    .exp-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-top: 2px;
+    }
+
+    .exp-company {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .exp-role {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--fg);
+    }
+
+    .exp-highlights {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .exp-highlights li {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .exp-highlights li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--border);
+      font-family: var(--mono);
+    }
+
+    /* ══════════════════════════════════════
+       PROJECTS
+    ══════════════════════════════════════ */
+    .projects-grid { display: grid; gap: 16px; }
+
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(45, 90, 61, 0.08);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .project-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--fg);
+    }
+
+    .project-context {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .project-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .project-link:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .project-metrics {
+      display: flex;
+      gap: 24px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+    }
+
+    .metric-item { display: flex; flex-direction: column; }
+
+    .metric-value {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+
+    .project-finding, .project-lesson {
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 8px 0;
+    }
+
+    .project-finding {
+      background: var(--accent-light);
+      border-left: 2px solid var(--accent);
+    }
+
+    .project-lesson {
+      background: var(--border);
+      border-left: 2px solid var(--muted);
+      opacity: 0.85;
+    }
+
+    .finding-label { color: var(--accent); }
+    .lesson-label  { color: var(--muted); }
+
+    .finding-label, .lesson-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════
+       SKILLS
+    ══════════════════════════════════════ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .skill-group-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .skill-list li {
+      font-size: 14px;
+      color: var(--fg);
+    }
+
+    /* ══════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════ */
+    .contact-content { max-width: 480px; }
+
+    .contact-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .contact-item-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      width: 70px;
+      color: var(--muted);
+    }
+
+    .contact-item a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-item a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 560px) {
+      .exp-item { grid-template-columns: 1fr; gap: 4px; }
+      .nav-links { display: none; }
+      .about-meta { gap: 20px; }
+    }
+
+    /* ══════════════════════════════════════
+       LANGUAGE SYSTEM
+    ══════════════════════════════════════ */
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+    span[data-lang].active { display: inline; }
+    [data-lang="ko"].active { word-break: keep-all; }
+    /* ══════════════════════════════════════
+       MODAL SYSTEM
+    ══════════════════════════════════════ */
+    .card-cta {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .project-card {
+      cursor: pointer;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover { border-color: var(--fg); color: var(--fg); }
+
+    .modal-context {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .modal-link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 20px;
+      color: var(--fg);
+      padding-right: 32px;
+    }
+
+    .modal-metrics {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-body { margin-bottom: 20px; }
+
+    .modal-section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 18px;
+      margin-bottom: 6px;
+    }
+
+    .modal-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .modal-text em {
+      font-style: italic;
+      color: var(--fg);
+    }
+
+    @media (max-width: 560px) {
+      .modal-box { padding: 24px 18px; }
+      .modal-title { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-name">sojeong park</span>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about"      data-i18n="nav-about">About</a></li>
+        <li><a href="#experience" data-i18n="nav-exp">Experience</a></li>
+        <li><a href="#projects"   data-i18n="nav-projects">Projects</a></li>
+        <li><a href="#skills"     data-i18n="nav-skills">Skills</a></li>
+        <li><a href="#contact"    data-i18n="nav-contact">Contact</a></li>
+      </ul>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <span id="theme-icon"></span>
+      </button>
+      <div class="lang-toggle">
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-ko" onclick="setLang('ko')">KO</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <p class="hero-label">Data Analyst · London, UK</p>
+    <h1 class="hero-name">
+      <span data-lang="en" class="active">Sojeong Park</span>
+      <span data-lang="ko">박소정</span>
+    </h1>
+    <h2 class="hero-tagline-main">
+      <span data-lang="en" class="active">I make data <em>work</em> —<br>end to end, from scratch.</span>
+      <span data-lang="ko">데이터가 <em>실제로 쓰이도록</em> —<br>처음부터 끝까지, 혼자서도.</span>
+    </h2>
+    <p class="hero-tagline">
+      <span data-lang="en" class="active">End-to-end data solutions — collection, automation, analysis, and dashboards — built independently in resource-constrained teams. Open to remote & international roles.</span>
+      <span data-lang="ko">데이터 수집·자동화·분석·대시보드까지, 전담 리소스 없는 환경에서 독립적으로 구축합니다. 원격 및 해외 포지션 지원 가능합니다.</span>
+    </p>
+    <div class="hero-links">
+      <a href="#contact"  class="btn btn-primary"  data-i18n="hero-cta-contact">Get in touch</a>
+      <a href="#projects" class="btn btn-outline"   data-i18n="hero-cta-projects">See projects</a>
+      <a href="https://www.linkedin.com/in/sojeongdata/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label" data-i18n="label-about">About</p>
+    <p class="about-text">
+      <span data-lang="en" class="active">Data Analyst specialising in marketing data operations, automation, and self-serve reporting. I've built practical data workflows from scratch — CRM systems, automated pipelines, and dashboards — turning fragmented data into tools teams can actually use for decisions. With a background bridging software engineering and business analytics, I work independently across the full data workflow, from data collection and automation to reporting. I'm drawn to roles where data isn't just reported, but actually shapes decisions.</span>
+      <span data-lang="ko">마케팅 데이터 운영, 자동화, 셀프서브 리포팅을 전문으로 하는 데이터 애널리스트입니다. 흩어진 데이터를 실제로 쓰이는 도구로 만드는 실용적인 데이터 워크플로우를 처음부터 구축해왔습니다. 개발자 경력과 비즈니스 애널리틱스를 잇는 배경으로, 데이터 수집·자동화부터 리포팅까지 전체 워크플로우를 독립적으로 다룰 수 있습니다. 데이터가 단순히 보고되는 것을 넘어 실제 의사결정을 바꾸는 환경을 선호합니다.</span>
+    </p>
+    <div class="about-meta">
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-location">Location</span>
+        <span class="meta-value">London, UK</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-visa">Visa</span>
+        <span class="meta-value">
+          <span data-lang="en" class="active">Youth Mobility Scheme · No sponsorship needed</span>
+          <span data-lang="ko">Youth Mobility Scheme · 스폰서십 불필요</span>
+        </span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-lang">Languages</span>
+        <span class="meta-value">Korean · Japanese · English</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="container">
+    <p class="section-label" data-i18n="label-achievements">Key Achievements</p>
+    <div class="achievements">
+      <div class="achievement-card">
+        <div class="achievement-number">300%+</div>
+        <div class="achievement-desc">
+          <span data-lang="en" class="active">Average SMS CRM ROAS across 27 campaigns — zero loss-making campaigns over 9 months</span>
+          <span data-lang="ko">9개월 27개 SMS CRM 캠페인 평균 ROAS — 마이너스 캠페인 없음</span>
+        </div>
+      </div>
+      <div class="achievement-card">
+        <div class="achievement-number">80%</div>
+        <div class="achievement-desc">
+          <span data-lang="en" class="active">Reduction in campaign preparation time across 46k+ customer database</span>
+          <span data-lang="ko">46k+ 고객 DB 캠페인 준비 시간 단축</span>
+        </div>
+      </div>
+      <div class="achievement-card">
+        <div class="achievement-number">70k+</div>
+        <div class="achievement-desc">
+          <span data-lang="en" class="active">Records unified across multiple data sources into a single source of truth</span>
+          <span data-lang="ko">다중 소스 레코드 통합 (단일 데이터 소스 구축)</span>
+        </div>
+      </div>
+      <div class="achievement-card">
+        <div class="achievement-number">1 day+</div>
+        <div class="achievement-desc">
+          <span data-lang="en" class="active">Reduced monthly reporting time via automated dashboards</span>
+          <span data-lang="ko">자동화 대시보드로 월간 리포팅 시간 단축</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label" data-i18n="label-exp">Experience</p>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Sep 2024<br>Nov 2025</div>
+        <div class="exp-company">HIGH-TECHER<br>Seoul</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en" class="active">Data Analyst, Marketing Team</span>
+          <span data-lang="ko">데이터 애널리스트, 마케팅팀</span>
+        </div>
+        <ul class="exp-highlights">
+          <li><span data-lang="en" class="active">Started as a 3-month intern, converted to full-time — role was newly created based on demonstrated impact</span><span data-lang="ko">3개월 인턴으로 시작, 성과를 인정받아 정직원 전환 — 팀 최초 데이터 애널리스트 직무 신설</span></li>
+          <li><span data-lang="en" class="active">Built end-to-end marketing data operations from scratch — CRM automation, self-serve pipelines, and BI dashboards</span><span data-lang="ko">마케팅 데이터 운영 전반을 처음부터 구축 — CRM 자동화, 셀프서브 파이프라인, BI 대시보드</span></li>
+          <li><span data-lang="en" class="active">Developed automated CRM workflows replacing manual audience extraction across 46k+ customers</span><span data-lang="ko">46k+ 고객 대상 수동 오디언스 추출을 자동화 CRM 워크플로우로 전환</span></li>
+          <li><span data-lang="en" class="active">Built RFM segmentation framework enabling non-technical marketers to independently target customer groups</span><span data-lang="ko">RFM 세그멘테이션 프레임워크 구축 — 비기술직 마케터도 독립적으로 고객 타게팅 가능</span></li>
+          <li><span data-lang="en" class="active">Created self-serve data workflows (API → processing → BI dashboards), reducing repeated ad-hoc engineering requests and making CRM data accessible to marketers</span><span data-lang="ko">API→처리→BI 셀프서브 워크플로우 구축으로 반복적인 개발 요청을 줄이고 마케터의 데이터 접근성 향상</span></li>
+          <li><span data-lang="en" class="active">Delivered Looker Studio KPI dashboards as single source of truth for 12 stakeholders</span><span data-lang="ko">Looker Studio KPI 대시보드 구축 — 12명 이해관계자의 단일 데이터 소스로 활용</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Aug 2018<br>Jul 2020</div>
+        <div class="exp-company">Porters Corp<br>/ ROUE GARCON<br>Tokyo</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en" class="active">Software Engineer</span>
+          <span data-lang="ko">소프트웨어 엔지니어</span>
+        </div>
+        <ul class="exp-highlights">
+          <li><span data-lang="en" class="active">Unit testing & QA with Selenium and JUnit in Agile/Scrum environment</span><span data-lang="ko">Agile/Scrum 환경에서 Selenium, JUnit 기반 단위 테스트 및 QA</span></li>
+          <li><span data-lang="en" class="active">Analysed server-side user logs in Linux/AWS, reported weekly performance to senior stakeholders</span><span data-lang="ko">Linux/AWS 서버 로그 분석 및 주간 성과 리포팅</span></li>
+          <li><span data-lang="en" class="active">Bridged communication across Korean, Japanese, and English-speaking teams</span><span data-lang="ko">한국어·일본어·영어 다국어 팀 간 커뮤니케이션 브릿지 역할</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label" data-i18n="label-projects">Projects</p>
+    <div class="projects-grid">
+
+      <!-- CARD 1 -->
+      <div class="project-card" onclick="openModal('modal-crm')">
+        <div class="project-header">
+          <div>
+            <div class="project-title">
+              <span data-lang="en" class="active">Marketing Data Operations — From Legacy Bottleneck to Self-Serve Workflows</span>
+              <span data-lang="ko">마케팅 데이터 운영 구축 — 레거시 병목에서 셀프서브 워크플로우로</span>
+            </div>
+            <span class="project-context">
+              <span data-lang="en" class="active">HIGH-TECHER · Seoul</span>
+              <span data-lang="ko">HIGH-TECHER · 서울</span>
+            </span>
+          </div>
+        </div>
+        <p class="project-desc">
+          <span data-lang="en" class="active">Built end-to-end marketing data operations from scratch — automated pipelines, unified 70k+ records, and self-serve BI dashboards — cutting data extraction time from hours to automated.</span>
+          <span data-lang="ko">자동화 파이프라인, 70k+ 레코드 통합, 셀프서브 BI 대시보드까지 마케팅 데이터 운영을 처음부터 구축. 데이터 추출 시간을 수 시간에서 자동화로 단축.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">Google Sheets</span><span class="tag">Apps Script</span>
+          <span class="tag">Looker Studio</span><span class="tag">REST API</span><span class="tag">RFM Segmentation</span>
+        </div>
+        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="project-card" onclick="openModal('modal-campaign')">
+        <div class="project-header">
+          <div>
+            <div class="project-title">
+              <span data-lang="en" class="active">Campaign Analytics — Audience Insight That Flipped the Strategy</span>
+              <span data-lang="ko">캠페인 애널리틱스 — 전략을 뒤집은 오디언스 인사이트</span>
+            </div>
+            <span class="project-context">
+              <span data-lang="en" class="active">HIGH-TECHER · Seoul</span>
+              <span data-lang="ko">HIGH-TECHER · 서울</span>
+            </span>
+          </div>
+        </div>
+        <p class="project-desc">
+          <span data-lang="en" class="active">End-to-end analytics across 4 recruitment campaigns (~900 applicants). Heatmap analysis revealed an entirely different converting audience — overturning the initial targeting strategy.</span>
+          <span data-lang="ko">4개 캠페인(약 900명) 전반의 애널리틱스 설계. 히트맵 분석으로 초기 타겟과 전혀 다른 실제 전환 오디언스를 발견해 전략을 전면 수정.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">Funnel Analysis</span><span class="tag">Heatmap</span><span class="tag">Audience Segmentation</span>
+          <span class="tag">Looker Studio</span><span class="tag">Survey Design</span>
+        </div>
+        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
+      </div>
+
+      <!-- CARD 3 — Ildong -->
+      <div class="project-card" onclick="openModal('modal-ildong')">
+        <div class="project-header">
+          <div>
+            <div class="project-title">
+              <span data-lang="en" class="active">Consumer Insight & Ad Effectiveness — Ildong Pharmaceutical</span>
+              <span data-lang="ko">소비자 인식 및 광고 효과 분석 — 일동제약</span>
+            </div>
+            <span class="project-context">
+              <span data-lang="en" class="active">Big Data Marketing Course · Team of 8 · Best Project Award 🏆</span>
+              <span data-lang="ko">빅데이터 마케팅 전문가 과정 · 팀 8명 · 우수상 수상 🏆</span>
+            </span>
+          </div>
+        </div>
+        <p class="project-desc">
+          <span data-lang="en" class="active">Analysed consumer awareness and ad campaign effectiveness for Ildong Pharmaceutical across 5 brands. Search query comparison across ad models directly influenced the client's strategic review — the following year, they replaced their ad model and campaign concept.</span>
+          <span data-lang="ko">일동제약 5개 브랜드의 소비자 인식 및 광고 효과를 분석. 광고 모델별 검색 쿼리 비교 분석이 클라이언트 전략 재검토에 직접 영향 — 이듬해 광고 모델과 컨셉이 교체됨.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">Search Trend Analysis</span><span class="tag">Regression Analysis</span>
+          <span class="tag">Google Sheets</span><span class="tag">Data Visualisation</span><span class="tag">Stakeholder Reporting</span>
+        </div>
+        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="project-card" onclick="openModal('modal-ga4')">
+        <div class="project-header">
+          <div>
+            <div class="project-title">
+              <span data-lang="en" class="active">GA4 & GTM Analytics — Quiz Web App Case Study</span>
+              <span data-lang="ko">GA4 & GTM 애널리틱스 — 퀴즈 웹앱 케이스 스터디</span>
+            </div>
+          </div>
+          <a href="https://overseas-quiz.vercel.app" target="_blank" class="project-link" onclick="event.stopPropagation()">↗ Live</a>
+        </div>
+        <p class="project-desc">
+          <span data-lang="en" class="active">Self-directed GA4/GTM portfolio project — planned, built, and deployed a quiz web app with full analytics stack including Consent Mode v2 and custom dimensions.</span>
+          <span data-lang="ko">GA4/GTM 포트폴리오 프로젝트 — 퀴즈 웹앱을 기획·개발·배포하고 Consent Mode v2와 커스텀 디멘션을 포함한 전체 애널리틱스 스택을 설계.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">GA4</span><span class="tag">GTM</span><span class="tag">Consent Mode v2</span>
+          <span class="tag">Funnel Analysis</span><span class="tag">HTML/CSS/JS</span>
+        </div>
+        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="project-card" onclick="openModal('modal-tarot')">
+        <div class="project-header">
+          <div>
+            <div class="project-title">
+              <span data-lang="en" class="active">YES or NO Tarot App</span>
+              <span data-lang="ko">해결! 양자택일 타로</span>
+            </div>
+          </div>
+          <a href="https://yesorno-tarot.vercel.app" target="_blank" class="project-link" onclick="event.stopPropagation()">↗ Live</a>
+        </div>
+        <p class="project-desc">
+          <span data-lang="en" class="active">Full-stack tarot web app with Supabase backend, GTM/GA4 custom event tracking, and image saving via Canvas API.</span>
+          <span data-lang="ko">Supabase 백엔드, GTM/GA4 커스텀 이벤트 트래킹, Canvas API 기반 이미지 저장 기능을 갖춘 풀스택 타로 웹앱.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">Supabase</span><span class="tag">GA4</span><span class="tag">GTM</span>
+          <span class="tag">Canvas API</span><span class="tag">Consent Mode v2</span>
+        </div>
+        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MODALS
+══════════════════════════════════════ -->
+
+<!-- MODAL 1: CRM -->
+<div class="modal-overlay" id="modal-crm">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-crm')">✕</button>
+    <p class="modal-context"><span data-lang="en" class="active">HIGH-TECHER · Seoul</span><span data-lang="ko">HIGH-TECHER · 서울</span></p>
+    <h3 class="modal-title"><span data-lang="en" class="active">Marketing Data Operations — From Legacy Bottleneck to Self-Serve Workflows</span><span data-lang="ko">마케팅 데이터 운영 구축 — 레거시 병목에서 셀프서브 워크플로우로</span></h3>
+    <div class="modal-metrics">
+      <div class="metric-item"><span class="metric-value">3–4h → automated</span><span class="metric-label"><span data-lang="en" class="active">Data extraction time</span><span data-lang="ko">데이터 추출 시간</span></span></div>
+      <div class="metric-item"><span class="metric-value">70k+</span><span class="metric-label"><span data-lang="en" class="active">Records unified</span><span data-lang="ko">통합 레코드</span></span></div>
+      <div class="metric-item"><span class="metric-value">3 days → 3 hrs</span><span class="metric-label"><span data-lang="en" class="active">Campaign setup time</span><span data-lang="ko">캠페인 설계 시간</span></span></div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-section-label"><span data-lang="en" class="active">Context</span><span data-lang="ko">배경</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Joined as the first dedicated Data Analyst in the marketing team. Data was locked behind a legacy admin system — extracting a single dataset took 3–4 hours, and the underlying database had an undocumented bug causing truncated exports (1,000 rows requested → ~960 returned). Engineering support required 3 days to 2 weeks per request.</span><span data-lang="ko">마케팅팀 최초 데이터 애널리스트로 합류. 데이터는 레거시 관리자 시스템에 묶여 있었고, 단일 데이터셋 추출에 3~4시간 소요. 데이터베이스에는 미문서화 버그(1,000행 요청 → 약 960행 출력)가 있었고, 개발팀 지원 요청 시 3일~2주가 걸렸음.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">What I built</span><span data-lang="ko">구축 내용</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Automated bulk extraction of 4 years of customer data using Python, merged sources into a unified 70k+ record database in Google Sheets, and built filter/arrayformula-based self-serve query sheets. Integrated Google, Meta, and Naver ad performance into a single monthly dashboard with one-click month switching via Apps Script. Connected government API (KDT/KDC) for daily auto-updating market intelligence, replacing quarterly manual reporting.</span><span data-lang="ko">Python으로 4년치 고객 데이터 자동 추출, 70k+ 레코드 통합 DB 구축. Google Sheets의 filter/arrayformula로 셀프서브 조회 시트 설계. Google·Meta·Naver 광고 데이터를 단일 대시보드로 통합, Apps Script로 원클릭 월간 전환. 정부 API(KDT/KDC) 연동으로 시장 데이터를 분기별 수동 보고에서 매일 자동 업데이트로 전환.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Key insight</span><span data-lang="ko">핵심 교훈</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">The most impactful data work is often removing the friction that prevents data from being used at all. Accessibility beats sophistication.</span><span data-lang="ko">가장 임팩트 있는 데이터 작업은 데이터가 아예 쓰이지 못하게 하는 마찰을 없애는 것. 접근성이 정교함보다 중요하다.</span></p>
+      <div style="margin-top: 20px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--accent-light);">
+        <p style="font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;"><span data-lang="en" class="active">Built artefact</span><span data-lang="ko">실제 결과물</span></p>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 10px;"><span data-lang="en" class="active">The RFM segmentation system from this project — rebuilt in Google Sheets with synthetic data, fully documented and scalable.</span><span data-lang="ko">이 프로젝트에서 구축한 RFM 세그멘테이션 시스템 — 가상 데이터로 재현, 문서화 및 확장 가능하도록 구성.</span></p>
+        <a href="https://docs.google.com/spreadsheets/d/1viN-9wXpoWC-0JqENVryPqCf_2eDRA911LTI7eFfR5A/edit?gid=869962204#gid=869962204" target="_blank" style="font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px;">→ View RFM Segmentation Template ↗</a>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag">Python</span><span class="tag">Google Sheets</span><span class="tag">Apps Script</span>
+      <span class="tag">Looker Studio</span><span class="tag">REST API</span><span class="tag">CRM Automation</span><span class="tag">RFM Segmentation</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 2: Campaign -->
+<div class="modal-overlay" id="modal-campaign">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-campaign')">✕</button>
+    <p class="modal-context"><span data-lang="en" class="active">HIGH-TECHER · Seoul</span><span data-lang="ko">HIGH-TECHER · 서울</span></p>
+    <h3 class="modal-title"><span data-lang="en" class="active">Campaign Analytics — Audience Insight That Flipped the Strategy</span><span data-lang="ko">캠페인 애널리틱스 — 전략을 뒤집은 오디언스 인사이트</span></h3>
+    <div class="modal-metrics">
+      <div class="metric-item"><span class="metric-value">1,012%</span><span class="metric-label"><span data-lang="en" class="active">Of recruitment target — early close</span><span data-lang="ko">모집 목표 초과, 조기 마감</span></span></div>
+      <div class="metric-item"><span class="metric-value">795%</span><span class="metric-label"><span data-lang="en" class="active">Of target on separate campaign</span><span data-lang="ko">별도 캠페인 목표 대비</span></span></div>
+      <div class="metric-item"><span class="metric-value">~900</span><span class="metric-label"><span data-lang="en" class="active">Applicants across 4 campaigns</span><span data-lang="ko">4개 캠페인 총 지원자</span></span></div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-section-label"><span data-lang="en" class="active">Context</span><span data-lang="ko">배경</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Designed and owned end-to-end analytics across 4 recruitment campaigns (~900 total applicants) for government-backed education programmes. Built intake dashboards, channel-level funnel analysis, and a conversion heatmap table used across marketing and operations teams.</span><span data-lang="ko">정부 지원 교육 프로그램 4개 모집 캠페인(총 약 900명) 전반의 애널리틱스 설계·운영. 유입 대시보드, 채널별 퍼널 분석, 마케팅·운영팀 공용 전환 히트맵 테이블 구축.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Key finding</span><span data-lang="ko">핵심 인사이트</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Initial targeting focused on early-20s users (AI tools for university assignments). Heatmap analysis revealed that 40–50s age groups were converting at significantly higher rates. Added a 5-point AI literacy scale to the intake form to validate the signal — results confirmed older adults were motivated by fear of being left behind. Marketing strategy was overhauled to target this segment. Separately, the heatmap identified a bottleneck in the sales follow-up stage.</span><span data-lang="ko">초기 타겟은 20대 초반. 히트맵 분석 결과 40~50대의 전환율이 현저히 높음을 발견. 신청 폼에 AI 활용도 5점 척도를 추가해 검증 — 40~50대가 주요 전환 세그먼트임을 확인, 마케팅 전략 전면 수정. 영업 팔로업 단계의 병목도 히트맵으로 식별.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Key insight</span><span data-lang="ko">핵심 교훈</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Assumed audience and actual converting audience can be entirely different. The data didn't just confirm a hypothesis — it replaced one.</span><span data-lang="ko">가정한 오디언스와 실제 전환 오디언스는 전혀 다를 수 있다. 데이터는 가설을 검증하는 데 그치지 않고, 가설 자체를 대체했다.</span></p>
+    </div>
+    <div class="tags">
+      <span class="tag">Funnel Analysis</span><span class="tag">Heatmap</span><span class="tag">Audience Segmentation</span>
+      <span class="tag">Google Sheets</span><span class="tag">Looker Studio</span><span class="tag">Apps Script</span><span class="tag">Survey Design</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 3: Ildong -->
+<div class="modal-overlay" id="modal-ildong">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-ildong')">✕</button>
+    <p class="modal-context"><span data-lang="en" class="active">Big Data Marketing Professional Course · Team of 8 · Jul–Aug 2024 · Best Project Award 🏆</span><span data-lang="ko">빅데이터 분석 마케팅 전문가 과정 · 팀 8명 · 2024.7–8 · 우수상 수상 🏆</span></p>
+    <h3 class="modal-title"><span data-lang="en" class="active">Consumer Insight & Ad Effectiveness Analysis — Ildong Pharmaceutical</span><span data-lang="ko">소비자 인식 리서치 및 광고 효과 빅데이터 분석 — 일동제약</span></h3>
+    <div class="modal-metrics">
+      <div class="metric-item"><span class="metric-value">5</span><span class="metric-label"><span data-lang="en" class="active">Brands analysed</span><span data-lang="ko">분석 브랜드 수</span></span></div>
+      <div class="metric-item"><span class="metric-value">~10k</span><span class="metric-label"><span data-lang="en" class="active">Records across 6-month dataset</span><span data-lang="ko">6개월 데이터셋 레코드</span></span></div>
+      <div class="metric-item"><span class="metric-value">16</span><span class="metric-label"><span data-lang="en" class="active">Stakeholders presented to</span><span data-lang="ko">발표 이해관계자 수</span></span></div>
+      <div class="metric-item"><span class="metric-value">5 days</span><span class="metric-label"><span data-lang="en" class="active">Saved in team data prep</span><span data-lang="ko">팀 데이터 준비 시간 단축</span></span></div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-section-label"><span data-lang="en" class="active">Context</span><span data-lang="ko">배경</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Analysed consumer awareness and 2024 ad campaign effectiveness for Ildong Pharmaceutical's flagship products (Aronamin Gold, ZigRab) across 5 brands, using ~10k records from a 6-month dataset. Findings presented to 16 stakeholders including the client's marketing team.</span><span data-lang="ko">일동제약 대표 상품(아로나민 골드, 지큐랩) 포함 5개 브랜드의 소비자 인식과 2024년 광고 효과를 약 10k 레코드, 6개월 데이터셋으로 분석. 클라이언트 마케팅팀 포함 16명에게 발표.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">What I did</span><span data-lang="ko">내 기여</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Conducted year-on-year search query comparison across ad models (황정민 2022 / 황정민 2023 / 손석구 2024), identifying whether each campaign drove sustained buzz or short-lived spikes using regression analysis and trend visualisation. Separately, designed the team's shared data cleaning system in Google Sheets — cell locking, version checkpoints, and documented workflow — cutting team data preparation time by 5 days.</span><span data-lang="ko">광고 모델별(황정민 2022/2023, 손석구 2024) 연도별 검색 쿼리 비교 분석 — 회귀분석과 트렌드 시각화로 각 캠페인이 지속적인 버즈로 이어졌는지 분석. 팀 공용 데이터 정제 시스템 설계(셀 잠금, 버전 기록, 사용 가이드)로 팀 일정 5일 단축.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Key finding</span><span data-lang="ko">핵심 인사이트</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">The 2024 campaign drove the highest search peak (85.9%) but the steepest post-campaign drop — indicating awareness without retention. The analysis surfaced gaps in the client's consumer segmentation and brand positioning that hadn't been previously identified.</span><span data-lang="ko">2024년 캠페인은 가장 높은 검색량 최고점(85.9%)을 기록했으나 캠페인 종료 후 하락폭도 가장 급격 — 화제성은 있었으나 지속성 부족. 클라이언트가 인지하지 못했던 소비자 세그멘테이션과 브랜드 포지셔닝의 공백을 드러냄.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Real-world impact</span><span data-lang="ko">실제 영향</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Ildong Pharmaceutical replaced their ad model and campaign concept the following year (2025). The marketing team lead noted: <em>"Better than expected. The year-on-year model query comparison was particularly strong — it prompted us to reconsider our entire marketing approach and recognise gaps in our consumer segmentation."</em></span><span data-lang="ko">일동제약은 이듬해(2025년) 광고 모델과 캠페인 컨셉을 교체함. 마케팅 팀장 코멘트: <em>"기대 이상의 데이터 분석. 황정민/손석구 쿼리 비교 분석 부분이 특히 좋았다. 고객 세그멘테이션이 명확하지 않았음을 깨달았고, 마케팅 운영에 경각심을 갖게 됐다."</em></span></p>
+    </div>
+    <div class="tags">
+      <span class="tag">Search Trend Analysis</span><span class="tag">Regression Analysis</span>
+      <span class="tag">Google Sheets</span><span class="tag">Data Visualisation</span><span class="tag">Stakeholder Reporting</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 4: GA4 -->
+<div class="modal-overlay" id="modal-ga4">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-ga4')">✕</button>
+    <p class="modal-context"><span data-lang="en" class="active">Self-directed project · <a href="https://overseas-quiz.vercel.app" target="_blank" class="modal-link">↗ Live</a></span><span data-lang="ko">개인 프로젝트 · <a href="https://overseas-quiz.vercel.app" target="_blank" class="modal-link">↗ Live</a></span></p>
+    <h3 class="modal-title"><span data-lang="en" class="active">GA4 & GTM Analytics — Quiz Web App Case Study</span><span data-lang="ko">GA4 & GTM 애널리틱스 — 퀴즈 웹앱 케이스 스터디</span></h3>
+    <div class="modal-metrics">
+      <div class="metric-item"><span class="metric-value">132</span><span class="metric-label"><span data-lang="en" class="active">Active Users</span><span data-lang="ko">활성 사용자</span></span></div>
+      <div class="metric-item"><span class="metric-value">81%</span><span class="metric-label"><span data-lang="en" class="active">Quiz Completion Rate</span><span data-lang="ko">퀴즈 완료율</span></span></div>
+      <div class="metric-item"><span class="metric-value">89%</span><span class="metric-label"><span data-lang="en" class="active">Mobile Traffic</span><span data-lang="ko">모바일 트래픽</span></span></div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-section-label"><span data-lang="en" class="active">Context</span><span data-lang="ko">배경</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Independently planned, built, and deployed a Korean-language quiz web app as a self-directed GA4/GTM portfolio project. Designed the full analytics stack from scratch — GTM container, GDPR-compliant cookie consent (Consent Mode v2), custom event tracking, and custom dimensions. Drove organic traffic via community referrals and analysed behaviour in GA4 Explore.</span><span data-lang="ko">GA4/GTM 포트폴리오 프로젝트로 한국어 퀴즈 웹앱을 직접 기획·개발·배포. GTM 컨테이너, GDPR 준수 쿠키 동의(Consent Mode v2), 커스텀 이벤트·디멘션까지 애널리틱스 스택 전체를 처음부터 설계. 커뮤니티 레퍼럴로 유입된 트래픽을 GA4 Explore에서 분석.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Key finding</span><span data-lang="ko">핵심 인사이트</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">Quiz start→complete rate held at 81% (74→60), but result sharing dropped to 17% (10/60). With 89% mobile users, friction in the share flow was the primary drop-off point — identified as the next optimisation target.</span><span data-lang="ko">퀴즈 시작→완료율은 81%(74→60)로 양호했으나, 결과 공유율은 17%(10/60)에 그침. 89% 모바일 사용자 기준 공유 플로우의 UX 마찰이 주요 이탈 원인으로 분석.</span></p>
+      <p class="modal-section-label"><span data-lang="en" class="active">Lesson learned</span><span data-lang="ko">배운 점</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">GA4 Custom Dimensions must be registered before launch — retroactive setup causes data gaps. Now use a pre-launch analytics checklist on every project.</span><span data-lang="ko">GA4 커스텀 디멘션은 런칭 전 등록 필수. 사후 세팅 시 데이터 공백 발생. 이후 모든 프로젝트에 사전 애널리틱스 체크리스트 적용 중.</span></p>
+    </div>
+    <div class="tags">
+      <span class="tag">GA4</span><span class="tag">GTM</span><span class="tag">Consent Mode v2</span>
+      <span class="tag">Custom Dimensions</span><span class="tag">Funnel Analysis</span><span class="tag">HTML/CSS/JS</span><span class="tag">Vercel</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 5: Tarot -->
+<div class="modal-overlay" id="modal-tarot">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-tarot')">✕</button>
+    <p class="modal-context"><span data-lang="en" class="active">Self-directed project · <a href="https://yesorno-tarot.vercel.app" target="_blank" class="modal-link">↗ Live</a></span><span data-lang="ko">개인 프로젝트 · <a href="https://yesorno-tarot.vercel.app" target="_blank" class="modal-link">↗ Live</a></span></p>
+    <h3 class="modal-title"><span data-lang="en" class="active">YES or NO Tarot App</span><span data-lang="ko">해결! 양자택일 타로</span></h3>
+    <div class="modal-body">
+      <p class="modal-section-label"><span data-lang="en" class="active">What I built</span><span data-lang="ko">구축 내용</span></p>
+      <p class="modal-text"><span data-lang="en" class="active">A full-stack tarot web app with Supabase backend, Google Consent Mode v2, and social sharing via Web Share API. Analytics instrumented via GTM/GA4 with custom event tracking. Image saving implemented using Canvas API with SVG rendering. Features 22 Major Arcana cards, category-based interpretations, and a daily 3-draw limit.</span><span data-lang="ko">Supabase 백엔드, Google Consent Mode v2, Web Share API를 활용한 풀스택 타로 웹앱. GTM/GA4 커스텀 이벤트 트래킹 및 Canvas API 기반 이미지 저장 기능 구현. 메이저 아르카나 22장, 카테고리별 해석, 하루 3회 제한 등 기능 포함.</span></p>
+    </div>
+    <div class="tags">
+      <span class="tag">Supabase</span><span class="tag">GA4</span><span class="tag">GTM</span>
+      <span class="tag">Canvas API</span><span class="tag">Web Share API</span><span class="tag">Consent Mode v2</span><span class="tag">Vercel</span>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label" data-i18n="label-skills">Skills</p>
+    <div class="skills-grid">
+      <div>
+        <p class="skill-group-label" data-i18n="skill-analytics">Analytics & Tracking</p>
+        <ul class="skill-list">
+          <li>GA4 · GTM</li>
+          <li>Google Consent Mode v2</li>
+          <li>RFM Segmentation</li>
+          <li>CRM Analytics</li>
+          <li>Funnel Analysis</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-group-label" data-i18n="skill-data">Data & Automation</p>
+        <ul class="skill-list">
+          <li>Python · SQL</li>
+          <li>Google Apps Script</li>
+          <li>REST APIs · JSON</li>
+          <li>Playwright</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-group-label" data-i18n="skill-viz">Visualisation</p>
+        <ul class="skill-list">
+          <li>Looker Studio</li>
+          <li>Tableau</li>
+          <li>Power BI</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-group-label" data-i18n="skill-dev">Development</p>
+        <ul class="skill-list">
+          <li>HTML · CSS · JS</li>
+          <li>Supabase</li>
+          <li>Vercel</li>
+          <li>Git · GitHub</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label" data-i18n="label-contact">Contact</p>
+    <div class="contact-content">
+      <p class="contact-text">
+        <span data-lang="en" class="active">Open to data analyst roles in London and internationally, including remote positions. Feel free to reach out.</span>
+        <span data-lang="ko">런던 및 해외 데이터 애널리스트 포지션을 찾고 있습니다.<br>원격 근무도 가능합니다. 편하게 연락 주세요.</span>
+      </p>
+      <div class="contact-links">
+        <div class="contact-item">
+          <span class="contact-item-label">Email</span>
+          <a href="mailto:sojeongpark.data@gmail.com">sojeongpark.data@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">LinkedIn</span>
+          <a href="https://www.linkedin.com/in/sojeongdata/" target="_blank">linkedin.com/in/sojeongdata</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">GitHub</span>
+          <a href="https://github.com/0tobebetter" target="_blank">github.com/0tobebetter</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p class="footer-text">© 2025 Sojeong Park · Built with care</p>
+  </div>
+</footer>
+
+<script>
+  /* ══════════════════════════════════════
+     MODAL SYSTEM
+  ══════════════════════════════════════ */
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ══════════════════════════════════════
+     THEME SYSTEM
+     - CSS [data-theme] 선택자가 스타일 전담
+     - JS는 data-theme 속성과 localStorage만 관리
+     - JS가 style 속성을 직접 건드리지 않음
+  ══════════════════════════════════════ */
+  const BG = { light: '#f5f4f0', dark: '#141412' };
+  const FG = { light: '#1a1a18', dark: '#e8e7e2' };
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.backgroundColor = BG[theme];
+    document.body.style.backgroundColor = BG[theme];
+    document.body.style.color = FG[theme];
+    document.getElementById('theme-icon').textContent = theme === 'dark' ? '☽' : '☀︎';
+    localStorage.setItem('theme', theme);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  }
+
+  // 초기 적용
+  const initTheme = document.documentElement.getAttribute('data-theme');
+  applyTheme(initTheme);
+
+  /* ══════════════════════════════════════
+     LANGUAGE SYSTEM
+  ══════════════════════════════════════ */
+  const i18n = {
+    en: {
+      'nav-about': 'About', 'nav-exp': 'Experience', 'nav-projects': 'Projects',
+      'nav-skills': 'Skills', 'nav-contact': 'Contact',
+      'label-about': 'About', 'label-achievements': 'Key Achievements',
+      'label-exp': 'Experience', 'label-projects': 'Projects',
+      'label-skills': 'Skills', 'label-contact': 'Contact',
+      'hero-cta-contact': 'Get in touch', 'hero-cta-projects': 'See projects',
+      'meta-location': 'Location', 'meta-visa': 'Visa', 'meta-lang': 'Languages',
+      'skill-analytics': 'Analytics & Tracking', 'skill-data': 'Data & Automation',
+      'skill-viz': 'Visualisation', 'skill-dev': 'Development',
+    },
+    ko: {
+      'nav-about': '소개', 'nav-exp': '경력', 'nav-projects': '프로젝트',
+      'nav-skills': '스킬', 'nav-contact': '연락처',
+      'label-about': '소개', 'label-achievements': '주요 성과',
+      'label-exp': '경력', 'label-projects': '프로젝트',
+      'label-skills': '스킬', 'label-contact': '연락처',
+      'hero-cta-contact': '연락하기', 'hero-cta-projects': '프로젝트 보기',
+      'meta-location': '위치', 'meta-visa': '비자', 'meta-lang': '언어',
+      'skill-analytics': '애널리틱스 & 트래킹', 'skill-data': '데이터 & 자동화',
+      'skill-viz': '시각화', 'skill-dev': '개발',
+    }
+  };
+
+  function setLang(lang) {
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === lang);
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (i18n[lang][key]) el.textContent = i18n[lang][key];
+    });
+    document.documentElement.lang = lang;
+    localStorage.setItem('lang', lang);
+  }
+
+  const savedLang = localStorage.getItem('lang');
+  const browserLang = navigator.language?.startsWith('ko') ? 'ko' : 'en';
+  setLang(savedLang || browserLang);
+</script>
+
+</body>
+</html>
