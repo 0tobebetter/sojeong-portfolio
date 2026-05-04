@@ -1260,7 +1260,7 @@
       <div class="contact-links">
         <div class="contact-item">
           <span class="contact-item-label">Email</span>
-          <a href="mailto:sojeongpark.data@gmail.com">sojeongpark.data@gmail.com</a>
+          <a href="mailto:sojeongpark.data@gmail.com" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'contact_email_click',contact_type:'email'})">sojeongpark.data@gmail.com</a>
         </div>
         <div class="contact-item">
           <span class="contact-item-label">LinkedIn</span>
@@ -1285,9 +1285,22 @@
   /* ══════════════════════════════════════
      MODAL SYSTEM
   ══════════════════════════════════════ */
+  const modalProjectNames = {
+    'modal-crm':      'marketing_data_ops',
+    'modal-campaign': 'campaign_analytics',
+    'modal-ildong':   'ildong_pharma',
+    'modal-ga4':      'quiz_app',
+    'modal-tarot':    'tarot_app'
+  };
+
   function openModal(id) {
     document.getElementById(id).classList.add('open');
     document.body.style.overflow = 'hidden';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'project_case_study_open',
+      project_name: modalProjectNames[id]
+    });
   }
 
   function closeModal(id) {
