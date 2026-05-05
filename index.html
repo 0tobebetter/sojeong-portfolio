@@ -787,6 +787,87 @@
       .modal-box { padding: 24px 18px; }
       .modal-title { font-size: 16px; }
     }
+
+    /* ══ SLIDE GALLERY (modal-ildong) ══ */
+    .ildong-gallery { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px; }
+
+    .gallery-group { margin-bottom: 28px; }
+    .gallery-group:last-child { margin-bottom: 0; }
+
+    .gallery-group-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .gallery-carousel {
+      position: relative;
+      padding: 0 36px;
+    }
+
+    .gallery-track-wrap {
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--border);
+    }
+
+    .gallery-track {
+      display: flex;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+
+    .gallery-track img {
+      min-width: 100%;
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      padding: 0;
+    }
+
+    .gallery-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+    .gallery-btn:disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .gallery-prev { left: 0; }
+    .gallery-next { right: 0; }
+
+    .gallery-counter {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 560px) {
+      .gallery-carousel { padding: 0 28px; }
+      .gallery-btn { width: 24px; height: 24px; font-size: 16px; }
+    }
   </style>
 </head>
 <body>
@@ -1164,6 +1245,84 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="modal-section-label"><span data-lang="en" class="active">Real-world impact</span><span data-lang="ko">실제 영향</span></p>
       <p class="modal-text"><span data-lang="en" class="active">Ildong Pharmaceutical replaced their ad model and campaign concept the following year (2025). The marketing team lead noted: <em>"Better than expected. The year-on-year model query comparison was particularly strong — it prompted us to reconsider our entire marketing approach and recognise gaps in our consumer segmentation."</em></span><span data-lang="ko">일동제약은 이듬해(2025년) 광고 모델과 캠페인 컨셉을 교체함. 마케팅 팀장 코멘트: <em>"기대 이상의 데이터 분석. 황정민/손석구 쿼리 비교 분석 부분이 특히 좋았다. 고객 세그멘테이션이 명확하지 않았음을 깨달았고, 마케팅 운영에 경각심을 갖게 됐다."</em></span></p>
     </div>
+    <!-- Slide Gallery -->
+    <div class="ildong-gallery">
+
+      <div class="gallery-group">
+        <p class="gallery-group-title">
+          <span data-lang="en" class="active">① Market overview</span>
+          <span data-lang="ko">① 시장 전체 파악</span>
+        </p>
+        <div class="gallery-carousel" data-total="2" data-current="0">
+          <button class="gallery-btn gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous" disabled>‹</button>
+          <div class="gallery-track-wrap">
+            <div class="gallery-track">
+              <img src="images/ildong/p10_brand_search_volume.png" alt="브랜드별 검색량" loading="lazy">
+              <img src="images/ildong/p11_total_buzz.png" alt="전체 버즈량" loading="lazy">
+            </div>
+          </div>
+          <button class="gallery-btn gallery-next" onclick="galleryNav(this,1)" aria-label="Next">›</button>
+          <div class="gallery-counter"><span class="gallery-current">1</span> / 2</div>
+        </div>
+      </div>
+
+      <div class="gallery-group">
+        <p class="gallery-group-title">
+          <span data-lang="en" class="active">② Channel &amp; time breakdown</span>
+          <span data-lang="ko">② 채널/시간별 상세 분석</span>
+        </p>
+        <div class="gallery-carousel" data-total="2" data-current="0">
+          <button class="gallery-btn gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous" disabled>‹</button>
+          <div class="gallery-track-wrap">
+            <div class="gallery-track">
+              <img src="images/ildong/p12_monthly_buzz_trend.png" alt="월별 버즈량 트렌드" loading="lazy">
+              <img src="images/ildong/p13_channel_buzz.png" alt="채널별 버즈량" loading="lazy">
+            </div>
+          </div>
+          <button class="gallery-btn gallery-next" onclick="galleryNav(this,1)" aria-label="Next">›</button>
+          <div class="gallery-counter"><span class="gallery-current">1</span> / 2</div>
+        </div>
+      </div>
+
+      <div class="gallery-group">
+        <p class="gallery-group-title">
+          <span data-lang="en" class="active">③ Brand attribute taxonomy</span>
+          <span data-lang="ko">③ 브랜드 속성 분류 체계 구축</span>
+        </p>
+        <div class="gallery-carousel" data-total="3" data-current="0">
+          <button class="gallery-btn gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous" disabled>‹</button>
+          <div class="gallery-track-wrap">
+            <div class="gallery-track">
+              <img src="images/ildong/p19_attribute_keywords.png" alt="속성 세부 키워드" loading="lazy">
+              <img src="images/ildong/p20_brand_attribute_comparison.png" alt="브랜드별 속성 비교" loading="lazy">
+              <img src="images/ildong/p21_aronamin_awareness_tracking.png" alt="아로나민 골드 인지 Tracking" loading="lazy">
+            </div>
+          </div>
+          <button class="gallery-btn gallery-next" onclick="galleryNav(this,1)" aria-label="Next">›</button>
+          <div class="gallery-counter"><span class="gallery-current">1</span> / 3</div>
+        </div>
+      </div>
+
+      <div class="gallery-group">
+        <p class="gallery-group-title">
+          <span data-lang="en" class="active">④ Ad campaign effectiveness</span>
+          <span data-lang="ko">④ 광고 캠페인 효과 분석</span>
+        </p>
+        <div class="gallery-carousel" data-total="2" data-current="0">
+          <button class="gallery-btn gallery-prev" onclick="galleryNav(this,-1)" aria-label="Previous" disabled>‹</button>
+          <div class="gallery-track-wrap">
+            <div class="gallery-track">
+              <img src="images/ildong/p52_longterm_search_analysis.png" alt="장기 검색량 분석" loading="lazy">
+              <img src="images/ildong/p53_yearly_campaign_trend.png" alt="연도별 캠페인 추세" loading="lazy">
+            </div>
+          </div>
+          <button class="gallery-btn gallery-next" onclick="galleryNav(this,1)" aria-label="Next">›</button>
+          <div class="gallery-counter"><span class="gallery-current">1</span> / 2</div>
+        </div>
+      </div>
+
+    </div>
+
     <div class="tags">
       <span class="tag">Search Trend Analysis</span><span class="tag">Regression Analysis</span>
       <span class="tag">Google Sheets</span><span class="tag">Data Visualisation</span><span class="tag">Stakeholder Reporting</span>
@@ -1391,6 +1550,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const savedLang = localStorage.getItem('lang');
   const browserLang = navigator.language?.startsWith('ko') ? 'ko' : 'en';
   setLang(savedLang || browserLang);
+
+  /* ══════════════════════════════════════
+     GALLERY SYSTEM (modal-ildong)
+  ══════════════════════════════════════ */
+  function galleryGoTo(carousel, idx) {
+    const total = parseInt(carousel.dataset.total);
+    idx = Math.max(0, Math.min(total - 1, idx));
+    carousel.dataset.current = idx;
+    carousel.querySelector('.gallery-track').style.transform = `translateX(-${idx * 100}%)`;
+    carousel.querySelector('.gallery-current').textContent = idx + 1;
+    carousel.querySelector('.gallery-prev').disabled = idx === 0;
+    carousel.querySelector('.gallery-next').disabled = idx === total - 1;
+    window._activeGalleryCarousel = carousel;
+  }
+
+  function galleryNav(btn, dir) {
+    const carousel = btn.closest('.gallery-carousel');
+    galleryGoTo(carousel, parseInt(carousel.dataset.current || '0') + dir);
+  }
+
+  // Touch swipe support
+  document.querySelectorAll('.gallery-carousel').forEach(function(carousel) {
+    var startX = 0;
+    carousel.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+      window._activeGalleryCarousel = carousel;
+    }, { passive: true });
+    carousel.addEventListener('touchend', function(e) {
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        galleryGoTo(carousel, parseInt(carousel.dataset.current || '0') + (diff > 0 ? 1 : -1));
+      }
+    }, { passive: true });
+    carousel.addEventListener('mousedown', function() {
+      window._activeGalleryCarousel = carousel;
+    });
+  });
+
+  // Keyboard arrow key support
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('modal-ildong').classList.contains('open')) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    var carousel = window._activeGalleryCarousel ||
+      document.querySelector('#modal-ildong .gallery-carousel');
+    if (!carousel) return;
+    galleryGoTo(carousel, parseInt(carousel.dataset.current || '0') + (e.key === 'ArrowRight' ? 1 : -1));
+    e.preventDefault();
+  });
 </script>
 
 </body>
