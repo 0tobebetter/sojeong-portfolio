@@ -153,6 +153,7 @@
     }
 
     .nav-links a:hover { color: var(--fg); }
+    .nav-cv-link { color: var(--accent) !important; border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
 
     /* ══════════════════════════════════════
        LANGUAGE TOGGLE
@@ -886,6 +887,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a href="#projects"   data-i18n="nav-projects">Projects</a></li>
         <li><a href="#skills"     data-i18n="nav-skills">Skills</a></li>
         <li><a href="#contact"    data-i18n="nav-contact">Contact</a></li>
+        <li><a href="Sojeong_Park_CV.pdf" download class="nav-cv-link" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'cv_download',source:'nav'})"><span data-lang="en" class="active">CV ↓</span><span data-lang="ko">이력서 ↓</span></a></li>
       </ul>
       <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <span id="theme-icon"></span>
@@ -918,6 +920,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="#contact"  class="btn btn-primary"  data-i18n="hero-cta-contact">Get in touch</a>
       <a href="#projects" class="btn btn-outline"   data-i18n="hero-cta-projects">See projects</a>
       <a href="https://www.linkedin.com/in/sojeongdata/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      <a href="Sojeong_Park_CV.pdf" download class="btn btn-outline" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'cv_download',source:'hero'})"><span data-lang="en" class="active">Download CV ↓</span><span data-lang="ko">이력서 다운로드 ↓</span></a>
     </div>
   </div>
 </section>
@@ -1439,6 +1442,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="contact-item">
           <span class="contact-item-label">GitHub</span>
           <a href="https://github.com/0tobebetter" target="_blank">github.com/0tobebetter</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">CV</span>
+          <a href="Sojeong_Park_CV.pdf" download onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'cv_download',source:'contact'})"><span data-lang="en" class="active">Sojeong_Park_CV.pdf ↓</span><span data-lang="ko">이력서 다운로드 ↓</span></a>
         </div>
       </div>
     </div>
