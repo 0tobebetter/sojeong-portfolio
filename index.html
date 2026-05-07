@@ -963,8 +963,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="meta-item">
         <span class="meta-label" data-i18n="meta-visa">Visa</span>
         <span class="meta-value">
-          <span data-lang="en" class="active">Youth Mobility Scheme · No sponsorship needed</span>
-          <span data-lang="ko">Youth Mobility Scheme · 스폰서십 불필요</span>
+          <span data-lang="en" class="active">Youth Mobility Scheme · Valid until April 2028 · No sponsorship needed</span>
+          <span data-lang="ko">Youth Mobility Scheme · 2028년 4월까지 유효 · 스폰서십 불필요</span>
         </span>
       </div>
       <div class="meta-item">
@@ -1161,27 +1161,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
       </div>
 
-      <!-- CARD 5 -->
-      <div class="project-card" onclick="openModal('modal-tarot')">
-        <div class="project-header">
-          <div>
-            <div class="project-title">
-              <span data-lang="en" class="active">YES or NO Tarot App</span>
-              <span data-lang="ko">해결! 양자택일 타로</span>
-            </div>
-          </div>
-          <a href="https://yesorno-tarot.vercel.app" target="_blank" class="project-link" onclick="event.stopPropagation()">↗ Live</a>
-        </div>
-        <p class="project-desc">
-          <span data-lang="en" class="active">Tarot web app with GTM/GA4 custom event tracking, Google Consent Mode v2, and image saving via Canvas API.</span>
-          <span data-lang="ko">GTM/GA4 커스텀 이벤트 트래킹, Google Consent Mode v2, Canvas API 기반 이미지 저장 기능을 갖춘 타로 웹앱.</span>
-        </p>
-        <div class="tags">
-          <span class="tag">GA4</span><span class="tag">GTM</span>
-          <span class="tag">Canvas API</span><span class="tag">Consent Mode v2</span>
-        </div>
-        <span class="card-cta"><span data-lang="en" class="active">View case study →</span><span data-lang="ko">케이스 스터디 보기 →</span></span>
-      </div>
 
     </div>
   </div>
@@ -1381,22 +1360,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
-<!-- MODAL 5: Tarot -->
-<div class="modal-overlay" onclick="if(event.target===this)closeModal(this.id)" id="modal-tarot">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('modal-tarot')">✕</button>
-    <p class="modal-context"><span data-lang="en" class="active">Self-directed project · <a href="https://yesorno-tarot.vercel.app" target="_blank" class="modal-link">↗ Live</a></span><span data-lang="ko">개인 프로젝트 · <a href="https://yesorno-tarot.vercel.app" target="_blank" class="modal-link">↗ Live</a></span></p>
-    <h3 class="modal-title"><span data-lang="en" class="active">YES or NO Tarot App</span><span data-lang="ko">해결! 양자택일 타로</span></h3>
-    <div class="modal-body">
-      <p class="modal-section-label"><span data-lang="en" class="active">What I built</span><span data-lang="ko">구축 내용</span></p>
-      <p class="modal-text"><span data-lang="en" class="active">Tarot web app with Google Consent Mode v2 and social sharing via Web Share API. Analytics instrumented via GTM/GA4 with custom event tracking. Image saving implemented using Canvas API with SVG rendering. Features 22 Major Arcana cards, category-based interpretations, and a daily 3-draw limit.</span><span data-lang="ko">Google Consent Mode v2, Web Share API를 활용한 타로 웹앱. GTM/GA4 커스텀 이벤트 트래킹 및 Canvas API 기반 이미지 저장 기능 구현. 메이저 아르카나 22장, 카테고리별 해석, 하루 3회 제한 등 기능 포함.</span></p>
-    </div>
-    <div class="tags">
-      <span class="tag">GA4</span><span class="tag">GTM</span>
-      <span class="tag">Canvas API</span><span class="tag">Web Share API</span><span class="tag">Consent Mode v2</span><span class="tag">Vercel</span>
-    </div>
-  </div>
-</div>
 
 <!-- SKILLS -->
 <section id="skills">
@@ -1488,7 +1451,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     'modal-campaign': 'campaign_analytics',
     'modal-ildong':   'ildong_pharma',
     'modal-ga4':      'quiz_app',
-    'modal-tarot':    'tarot_app'
   };
 
   function openModal(id) {
@@ -1575,9 +1537,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     localStorage.setItem('lang', lang);
   }
 
-  const savedLang = localStorage.getItem('lang');
-  const browserLang = navigator.language?.startsWith('ko') ? 'ko' : 'en';
-  setLang(savedLang || browserLang);
+  setLang('en');
 
   /* ══════════════════════════════════════
      GALLERY SYSTEM (modal-ildong)
