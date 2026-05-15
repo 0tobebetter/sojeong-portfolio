@@ -274,6 +274,24 @@
       margin-bottom: 32px;
     }
 
+    .hero-bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .hero-bullets li {
+      padding-left: 1.2em;
+      position: relative;
+    }
+
+    .hero-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+
     .hero-links {
       display: flex;
       gap: 16px;
@@ -931,46 +949,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span data-lang="ko">박소정</span>
     </h1>
     <h2 class="hero-tagline-main">
-      <span data-lang="en" class="active">I make data <em>work</em> —<br>end to end, from scratch.</span>
+      <span data-lang="en" class="active">From raw data to decisions —<br>I build the full stack: <em>pipelines, analysis, dashboards.</em></span>
       <span data-lang="ko">데이터가 <em>실제로 쓰이도록</em> —<br>처음부터 끝까지, 혼자서도.</span>
     </h2>
-    <p class="hero-tagline">
-      <span data-lang="en" class="active">End-to-end data solutions — collection, automation, analysis, and dashboards — built independently in resource-constrained teams. Open to remote & international roles.</span>
-      <span data-lang="ko">데이터 수집·자동화·분석·대시보드까지, 전담 리소스 없는 환경에서 독립적으로 구축합니다. 원격 및 해외 포지션 지원 가능합니다.</span>
-    </p>
     <div class="hero-links">
       <a href="#contact"  class="btn btn-primary"  data-i18n="hero-cta-contact">Get in touch</a>
       <a href="#projects" class="btn btn-outline"   data-i18n="hero-cta-projects">See projects</a>
       <a href="https://www.linkedin.com/in/sojeongdata/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
       <a href="Sojeong_Park_CV.pdf" download class="btn btn-outline" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'cv_download',source:'hero'})"><span data-lang="en" class="active">Download CV ↓</span><span data-lang="ko">이력서 다운로드 ↓</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="container">
-    <p class="section-label" data-i18n="label-about">About</p>
-    <p class="about-text">
-      <span data-lang="en" class="active">Data Analyst specialising in marketing data operations, automation, and self-serve reporting. I've built practical data workflows from scratch — CRM systems, automated pipelines, and dashboards — turning fragmented data into tools teams can actually use for decisions. With a background bridging software engineering and business analytics, I work independently across the full data workflow, from data collection and automation to reporting. I'm drawn to roles where data isn't just reported, but actually shapes decisions.</span>
-      <span data-lang="ko">마케팅 데이터 운영, 자동화, 셀프서브 리포팅을 전문으로 하는 데이터 애널리스트입니다. 흩어진 데이터를 실제로 쓰이는 도구로 만드는 실용적인 데이터 워크플로우를 처음부터 구축해왔습니다. 개발자 경력과 비즈니스 애널리틱스를 잇는 배경으로, 데이터 수집·자동화부터 리포팅까지 전체 워크플로우를 독립적으로 다룰 수 있습니다. 데이터가 단순히 보고되는 것을 넘어 실제 의사결정을 바꾸는 환경을 선호합니다.</span>
-    </p>
-    <div class="about-meta">
-      <div class="meta-item">
-        <span class="meta-label" data-i18n="meta-location">Location</span>
-        <span class="meta-value">London, UK</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label" data-i18n="meta-visa">Visa</span>
-        <span class="meta-value">
-          <span data-lang="en" class="active">Youth Mobility Scheme · Valid until April 2028 · No sponsorship needed</span>
-          <span data-lang="ko">Youth Mobility Scheme · 2028년 4월까지 유효 · 스폰서십 불필요</span>
-        </span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label" data-i18n="meta-lang">Languages</span>
-        <span class="meta-value">Korean · Japanese · English</span>
-      </div>
     </div>
   </div>
 </section>
@@ -1012,47 +998,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
+<!-- ABOUT -->
+<section id="about">
   <div class="container">
-    <p class="section-label" data-i18n="label-exp">Experience</p>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-period">Sep 2024<br>Nov 2025</div>
-        <div class="exp-company">HIGH-TECHER<br>Seoul</div>
+    <p class="section-label" data-i18n="label-about">About</p>
+    <p class="about-text">
+      <span data-lang="en" class="active">Data Analyst with a software engineering background, specialising in building data systems from scratch — pipelines, automation, and dashboards that teams actually use.<br><br>I work independently across the full data workflow: from collection and modelling to analysis and reporting. With a background bridging tech and business, I'm comfortable translating between engineers and non-technical stakeholders — making data accessible and actionable for both. I'm drawn to roles where data doesn't just get reported — it shapes what happens next, ideally within a team where I can keep building, keep learning, and grow alongside stronger data culture.</span>
+      <span data-lang="ko">마케팅 데이터 운영, 자동화, 셀프서브 리포팅을 전문으로 하는 데이터 애널리스트입니다. 흩어진 데이터를 실제로 쓰이는 도구로 만드는 실용적인 데이터 워크플로우를 처음부터 구축해왔습니다. 개발자 경력과 비즈니스 애널리틱스를 잇는 배경으로, 데이터 수집·자동화부터 리포팅까지 전체 워크플로우를 독립적으로 다룰 수 있습니다. 데이터가 단순히 보고되는 것을 넘어 실제 의사결정을 바꾸는 환경을 선호합니다.</span>
+    </p>
+    <div class="about-meta">
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-location">Location</span>
+        <span class="meta-value">London, UK</span>
       </div>
-      <div>
-        <div class="exp-role">
-          <span data-lang="en" class="active">Data Analyst, Marketing Team</span>
-          <span data-lang="ko">데이터 애널리스트, 마케팅팀</span>
-        </div>
-        <ul class="exp-highlights">
-          <li><span data-lang="en" class="active">Started as a 3-month intern, converted to full-time — role was newly created based on demonstrated impact</span><span data-lang="ko">3개월 인턴으로 시작, 성과를 인정받아 정직원 전환 — 팀 최초 데이터 애널리스트 직무 신설</span></li>
-          <li><span data-lang="en" class="active">Built end-to-end marketing data operations from scratch — CRM automation, self-serve pipelines, and BI dashboards</span><span data-lang="ko">마케팅 데이터 운영 전반을 처음부터 구축 — CRM 자동화, 셀프서브 파이프라인, BI 대시보드</span></li>
-          <li><span data-lang="en" class="active">Developed automated CRM workflows replacing manual audience extraction across 46k+ customers</span><span data-lang="ko">46k+ 고객 대상 수동 오디언스 추출을 자동화 CRM 워크플로우로 전환</span></li>
-          <li><span data-lang="en" class="active">Built RFM segmentation framework enabling non-technical marketers to independently target customer groups</span><span data-lang="ko">RFM 세그멘테이션 프레임워크 구축 — 비기술직 마케터도 독립적으로 고객 타게팅 가능</span></li>
-          <li><span data-lang="en" class="active">Created self-serve data workflows (API → processing → BI dashboards), reducing repeated ad-hoc engineering requests and making CRM data accessible to marketers</span><span data-lang="ko">API→처리→BI 셀프서브 워크플로우 구축으로 반복적인 개발 요청을 줄이고 마케터의 데이터 접근성 향상</span></li>
-          <li><span data-lang="en" class="active">Delivered Looker Studio KPI dashboards as single source of truth for 12 stakeholders</span><span data-lang="ko">Looker Studio KPI 대시보드 구축 — 12명 이해관계자의 단일 데이터 소스로 활용</span></li>
-        </ul>
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-visa">Visa</span>
+        <span class="meta-value">
+          <span data-lang="en" class="active">Youth Mobility Scheme · Valid until April 2028 · No sponsorship needed</span>
+          <span data-lang="ko">Youth Mobility Scheme · 2028년 4월까지 유효 · 스폰서십 불필요</span>
+        </span>
       </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-meta">
-        <div class="exp-period">Aug 2018<br>Jul 2020</div>
-        <div class="exp-company">Porters Corp<br>/ ROUE GARCON<br>Tokyo</div>
-      </div>
-      <div>
-        <div class="exp-role">
-          <span data-lang="en" class="active">Software Engineer</span>
-          <span data-lang="ko">소프트웨어 엔지니어</span>
-        </div>
-        <ul class="exp-highlights">
-          <li><span data-lang="en" class="active">Unit testing & QA with Selenium and JUnit in Agile/Scrum environment</span><span data-lang="ko">Agile/Scrum 환경에서 Selenium, JUnit 기반 단위 테스트 및 QA</span></li>
-          <li><span data-lang="en" class="active">Analysed server-side user logs in Linux/AWS, reported weekly performance to senior stakeholders</span><span data-lang="ko">Linux/AWS 서버 로그 분석 및 주간 성과 리포팅</span></li>
-          <li><span data-lang="en" class="active">Bridged communication across Korean, Japanese, and English-speaking teams</span><span data-lang="ko">한국어·일본어·영어 다국어 팀 간 커뮤니케이션 브릿지 역할</span></li>
-        </ul>
+      <div class="meta-item">
+        <span class="meta-label" data-i18n="meta-lang">Languages</span>
+        <span class="meta-value">Korean · Japanese · English</span>
       </div>
     </div>
   </div>
@@ -1360,6 +1328,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label" data-i18n="label-exp">Experience</p>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Sep 2024<br>Nov 2025</div>
+        <div class="exp-company">HIGH-TECHER<br>Seoul</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en" class="active">Data Analyst, Marketing Team</span>
+          <span data-lang="ko">데이터 애널리스트, 마케팅팀</span>
+        </div>
+        <ul class="exp-highlights">
+          <li><span data-lang="en" class="active">Started as a 3-month intern, converted to full-time — role was newly created based on demonstrated impact</span><span data-lang="ko">3개월 인턴으로 시작, 성과를 인정받아 정직원 전환 — 팀 최초 데이터 애널리스트 직무 신설</span></li>
+          <li><span data-lang="en" class="active">Built end-to-end marketing data operations from scratch — CRM automation, self-serve pipelines, and BI dashboards</span><span data-lang="ko">마케팅 데이터 운영 전반을 처음부터 구축 — CRM 자동화, 셀프서브 파이프라인, BI 대시보드</span></li>
+          <li><span data-lang="en" class="active">Developed automated CRM workflows replacing manual audience extraction across 46k+ customers</span><span data-lang="ko">46k+ 고객 대상 수동 오디언스 추출을 자동화 CRM 워크플로우로 전환</span></li>
+          <li><span data-lang="en" class="active">Built RFM segmentation framework enabling non-technical marketers to independently target customer groups</span><span data-lang="ko">RFM 세그멘테이션 프레임워크 구축 — 비기술직 마케터도 독립적으로 고객 타게팅 가능</span></li>
+          <li><span data-lang="en" class="active">Created self-serve data workflows (API → processing → BI dashboards), reducing repeated ad-hoc engineering requests and making CRM data accessible to marketers</span><span data-lang="ko">API→처리→BI 셀프서브 워크플로우 구축으로 반복적인 개발 요청을 줄이고 마케터의 데이터 접근성 향상</span></li>
+          <li><span data-lang="en" class="active">Delivered Looker Studio KPI dashboards as single source of truth for 12 stakeholders</span><span data-lang="ko">Looker Studio KPI 대시보드 구축 — 12명 이해관계자의 단일 데이터 소스로 활용</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Aug 2018<br>Jul 2020</div>
+        <div class="exp-company">Porters Corp<br>/ ROUE GARCON<br>Tokyo</div>
+      </div>
+      <div>
+        <div class="exp-role">
+          <span data-lang="en" class="active">Software Engineer</span>
+          <span data-lang="ko">소프트웨어 엔지니어</span>
+        </div>
+        <ul class="exp-highlights">
+          <li><span data-lang="en" class="active">Unit testing & QA with Selenium and JUnit in Agile/Scrum environment</span><span data-lang="ko">Agile/Scrum 환경에서 Selenium, JUnit 기반 단위 테스트 및 QA</span></li>
+          <li><span data-lang="en" class="active">Analysed server-side user logs in Linux/AWS, reported weekly performance to senior stakeholders</span><span data-lang="ko">Linux/AWS 서버 로그 분석 및 주간 성과 리포팅</span></li>
+          <li><span data-lang="en" class="active">Bridged communication across Korean, Japanese, and English-speaking teams</span><span data-lang="ko">한국어·일본어·영어 다국어 팀 간 커뮤니케이션 브릿지 역할</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- SKILLS -->
 <section id="skills">
